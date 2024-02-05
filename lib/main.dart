@@ -25,7 +25,7 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData(
         primaryColor: Colors.blue,
       ),
-      home: LogIn(),
+      home:const LogIn(),
 
       // home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );

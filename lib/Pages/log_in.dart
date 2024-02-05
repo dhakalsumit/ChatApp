@@ -1,5 +1,6 @@
 // ignore_for_file: file_names
 
+import 'package:chatapp/Pages/home_page.dart';
 import 'package:chatapp/Pages/register_page.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -42,6 +43,7 @@ class _LogInState extends State<LogIn> {
                 height: 20,
               ),
               const TextField(
+                
                 decoration: InputDecoration(
                     contentPadding: EdgeInsets.only(top: 30),
                     border: OutlineInputBorder(
@@ -72,7 +74,12 @@ class _LogInState extends State<LogIn> {
                 height: 20,
               ),
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const HomeScreen()));
+                },
                 style: const ButtonStyle(
                     backgroundColor: MaterialStatePropertyAll(Colors.blue)),
                 child: const Center(
