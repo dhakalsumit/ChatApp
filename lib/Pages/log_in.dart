@@ -1,7 +1,6 @@
 // ignore_for_file: file_names
 
 import 'package:chatapp/Pages/register_page.dart';
-import 'package:chatapp/helper/function.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
@@ -101,7 +100,8 @@ class _LogInState extends State<LogIn> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => RegisterPage()));
+                                    builder: (context) =>
+                                        const RegisterPage()));
                           }),
                   ],
                 ),
