@@ -16,7 +16,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
+    
     super.initState();
     _emailController = TextEditingController();
     _passwordController = TextEditingController();
@@ -24,7 +24,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
+    
     super.dispose();
     _emailController.dispose();
     _passwordController.dispose();

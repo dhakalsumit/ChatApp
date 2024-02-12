@@ -43,7 +43,7 @@ class _LogInState extends State<LogIn> {
                 height: 20,
               ),
               const TextField(
-                
+                keyboardType: TextInputType.emailAddress,
                 decoration: InputDecoration(
                     contentPadding: EdgeInsets.only(top: 30),
                     border: OutlineInputBorder(
