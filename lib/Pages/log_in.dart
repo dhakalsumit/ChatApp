@@ -2,6 +2,7 @@
 
 import 'package:chatapp/Pages/home_page.dart';
 import 'package:chatapp/Pages/register_page.dart';
+import 'package:chatapp/services/auth_service.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
@@ -13,7 +14,30 @@ class LogIn extends StatefulWidget {
 }
 
 class _LogInState extends State<LogIn> {
+  late final TextEditingController _emailController;
+  late final TextEditingController _passwordController;
   @override
+  void initState() {
+    _emailController = TextEditingController();
+    _passwordController = TextEditingController();
+
+    // TODO: implement initState
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    // TODO: implement dispose
+    super.dispose();
+  }
+
+  login(String email, String password) {
+    final loginAuth = Authenticator();
+    loginAuth.login(email, password);
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
@@ -42,9 +66,10 @@ class _LogInState extends State<LogIn> {
               const SizedBox(
                 height: 20,
               ),
-              const TextField(
+              TextField(
+                controller: _emailController,
                 keyboardType: TextInputType.emailAddress,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                     contentPadding: EdgeInsets.only(top: 30),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(10)),
@@ -58,8 +83,9 @@ class _LogInState extends State<LogIn> {
               const SizedBox(
                 height: 20,
               ),
-              const TextField(
-                decoration: InputDecoration(
+              TextField(
+                controller: _passwordController,
+                decoration: const InputDecoration(
                     contentPadding: EdgeInsets.only(top: 30),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(10)),

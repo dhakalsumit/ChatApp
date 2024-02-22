@@ -16,7 +16,6 @@ class _RegisterPageState extends State<RegisterPage> {
 
   @override
   void initState() {
-    
     super.initState();
     _emailController = TextEditingController();
     _passwordController = TextEditingController();
@@ -24,16 +23,16 @@ class _RegisterPageState extends State<RegisterPage> {
 
   @override
   void dispose() {
-    
     super.dispose();
     _emailController.dispose();
     _passwordController.dispose();
   }
 
   register() {
-    AuthService().registerwithEmailandPassword(
-        _emailController.text, _passwordController.text);
+    Authenticator().signup(_emailController.text, _passwordController.text);
   }
+
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -64,66 +63,101 @@ class _RegisterPageState extends State<RegisterPage> {
               const SizedBox(
                 height: 20,
               ),
-              const TextField(
-                decoration: InputDecoration(
-                    contentPadding: EdgeInsets.only(top: 30),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
-                    ),
-                    hintText: "Full Name",
-                    prefixIcon: Icon(
-                      Icons.person,
-                      color: Colors.blue,
-                    )),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              TextField(
-                controller: _emailController,
-                decoration: const InputDecoration(
-                    contentPadding: EdgeInsets.only(top: 30),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
-                    ),
-                    hintText: "Email",
-                    prefixIcon: Icon(
-                      Icons.email,
-                      color: Colors.blue,
-                    )),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              TextField(
-                controller: _passwordController,
-                decoration: const InputDecoration(
-                    contentPadding: EdgeInsets.only(top: 30),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
-                    ),
-                    hintText: "Password",
-                    prefixIcon: Icon(
-                      Icons.lock,
-                      color: Colors.blue,
-                    )),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  register();
-                },
-                style: const ButtonStyle(
-                    backgroundColor: MaterialStatePropertyAll(Colors.blue)),
-                child: const Center(
-                  child: Text(
-                    "Register",
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
-              ),
+              Form(
+                  key: _formKey,
+                  child: Column(
+                    children: [
+                      TextFormField(
+                        decoration: const InputDecoration(
+                            contentPadding: EdgeInsets.only(top: 30),
+                            border: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10)),
+                            ),
+                            hintText: "Full Name",
+                            prefixIcon: Icon(
+                              Icons.person,
+                              color: Colors.blue,
+                            )),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      TextFormField(
+                        controller: _emailController,
+                        decoration: const InputDecoration(
+                            contentPadding: EdgeInsets.only(top: 30),
+                            border: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10)),
+                            ),
+                            hintText: "Email",
+                            prefixIcon: Icon(
+                              Icons.email,
+                            )),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter email address';
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      TextFormField(
+                        controller: _passwordController,
+                        decoration: const InputDecoration(
+                            contentPadding: EdgeInsets.only(top: 30),
+                            border: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10)),
+                            ),
+                            hintText: "Password",
+                            prefixIcon: Icon(
+                              Icons.lock,
+                              color: Colors.blue,
+                            )),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter Password';
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          if (_formKey.currentState!.validate()) {
+                            // If the form is valid, display a snackbar. In the real world,
+                            // you'd often call a server or save the information in a database.
+                            // ScaffoldMessenger.of(context).showSnackBar(
+                            //   const SnackBar(
+                            //       content: Text(
+                            //         'Registering....',
+                            //       ),
+                            //       backgroundColor: Colors.blue),
+                            // );
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => LogIn()));
+                          }
+                        },
+                        style: const ButtonStyle(
+                            backgroundColor:
+                                MaterialStatePropertyAll(Colors.blue)),
+                        child: const Center(
+                          child: Text(
+                            "Register",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                      ),
+                    ],
+                  )),
               const SizedBox(
                 height: 20,
               ),
