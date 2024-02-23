@@ -90,7 +90,7 @@ class _LogInState extends State<LogIn> {
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(10)),
                     ),
-                    hintText: "Password",
+                    hintText: "Password ",
                     prefixIcon: Icon(
                       Icons.lock,
                       color: Colors.blue,
