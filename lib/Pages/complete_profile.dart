@@ -11,7 +11,24 @@ class CompleteProfile extends StatefulWidget {
 
 class _CompleteProfileState extends State<CompleteProfile> {
   void showPhotoOption() {
-    
+    showDialog(
+        context: context,
+        builder: (context) {
+          return const AlertDialog(
+            title: Text("Upload Profile"),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                ListTile(
+                  title: Text("Choose From Gallery"),
+                ),
+                ListTile(
+                  title: Text("Take a Photo"),
+                ),
+              ],
+            ),
+          );
+        });
   }
 
   @override
