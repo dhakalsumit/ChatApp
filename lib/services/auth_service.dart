@@ -44,6 +44,8 @@ class Authenticator {
 
       Usermodel usermodel =
           Usermodel.fromMap(userData.data() as Map<String, dynamic>);
+
+      print("Log in successfull");
     }
   }
 }

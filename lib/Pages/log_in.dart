@@ -33,9 +33,11 @@ class _LogInState extends State<LogIn> {
     super.dispose();
   }
 
-  login(String email, String password) {
-    final loginAuth = Authenticator();
-    loginAuth.login(email, password);
+  values() {
+    login(String email, String password) {
+      final loginAuth = Authenticator();
+      loginAuth.login(email, password);
+    }
   }
 
   Widget build(BuildContext context) {
@@ -101,6 +103,8 @@ class _LogInState extends State<LogIn> {
               ),
               ElevatedButton(
                 onPressed: () {
+                  values();
+
                   Navigator.push(
                       context,
                       MaterialPageRoute(

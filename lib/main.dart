@@ -1,3 +1,4 @@
+import 'package:chatapp/Pages/complete_profile.dart';
 import 'package:chatapp/Pages/log_in.dart';
 import 'package:chatapp/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -25,7 +26,7 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData(
         primaryColor: Colors.blue,
       ),
-      home:const LogIn(),
+      home: CompleteProfile(),
 
       // home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
