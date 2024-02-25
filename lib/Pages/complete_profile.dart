@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 
 class CompleteProfile extends StatefulWidget {
@@ -14,25 +15,31 @@ class CompleteProfile extends StatefulWidget {
 
 class _CompleteProfileState extends State<CompleteProfile> {
   TextEditingController textEditingController = TextEditingController();
-  late File imageFile;
+  File? imageFile;
 
-  selectImage(ImageSource source) async {
-    await ImagePicker().pickImage(source: source);
+  void selectImage(ImageSource source) async {
+    XFile? pickedImage = await ImagePicker().pickImage(source: source);
+
+    if (pickedImage != null) {
+      // imageFile =  Image.file(File(pickedImage.path));
+      setState(() {
+        imageFile = File(pickedImage.path);
+      });
+    }
   }
-
-  void cropImage() async {}
 
   void showPhotoOption() {
     showDialog(
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: Text("Upload Profile"),
+            title: const Text("Upload Profile"),
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 ListTile(
                   onTap: () {
+                    Navigator.of(context).pop();
                     selectImage(ImageSource.gallery);
                   },
                   leading: const Icon(Icons.photo),
@@ -40,6 +47,7 @@ class _CompleteProfileState extends State<CompleteProfile> {
                 ),
                 ListTile(
                   onTap: () {
+                    Navigator.of(context).pop();
                     selectImage(ImageSource.camera);
                   },
                   leading: const Icon(Icons.camera_alt),
@@ -69,7 +77,8 @@ class _CompleteProfileState extends State<CompleteProfile> {
               onPressed: () {
                 showPhotoOption();
               },
-              child: const CircleAvatar(
+              child: CircleAvatar(
+                backgroundImage: FileImage(imageFile ?? File("path")),
                 radius: 60,
                 child: Icon(
                   Icons.person,
