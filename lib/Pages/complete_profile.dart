@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 class CompleteProfile extends StatefulWidget {
   const CompleteProfile({super.key});
@@ -10,20 +13,37 @@ class CompleteProfile extends StatefulWidget {
 }
 
 class _CompleteProfileState extends State<CompleteProfile> {
+  TextEditingController textEditingController = TextEditingController();
+  late File imageFile;
+
+  selectImage(ImageSource source) async {
+    await ImagePicker().pickImage(source: source);
+  }
+
+  void cropImage() async {}
+
   void showPhotoOption() {
     showDialog(
         context: context,
         builder: (context) {
-          return const AlertDialog(
+          return AlertDialog(
             title: Text("Upload Profile"),
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 ListTile(
-                  title: Text("Choose From Gallery"),
+                  onTap: () {
+                    selectImage(ImageSource.gallery);
+                  },
+                  leading: const Icon(Icons.photo),
+                  title: const Text("Choose From Gallery"),
                 ),
                 ListTile(
-                  title: Text("Take a Photo"),
+                  onTap: () {
+                    selectImage(ImageSource.camera);
+                  },
+                  leading: const Icon(Icons.camera_alt),
+                  title: const Text("Take a Photo"),
                 ),
               ],
             ),
@@ -49,7 +69,7 @@ class _CompleteProfileState extends State<CompleteProfile> {
               onPressed: () {
                 showPhotoOption();
               },
-              child: CircleAvatar(
+              child: const CircleAvatar(
                 radius: 60,
                 child: Icon(
                   Icons.person,
@@ -66,10 +86,10 @@ class _CompleteProfileState extends State<CompleteProfile> {
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 40,
             ),
-            ElevatedButton(onPressed: () {}, child: Text("Submit"))
+            ElevatedButton(onPressed: () {}, child: const Text("Submit"))
           ],
         ));
   }
