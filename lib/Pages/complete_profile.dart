@@ -1,13 +1,17 @@
 import 'dart:io';
 
+import 'package:chatapp/services/usermodel.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 
 class CompleteProfile extends StatefulWidget {
-  const CompleteProfile({super.key});
+  final User? firebaseuser;
+  final Usermodel? usermodel;
+  const CompleteProfile({super.key, this.firebaseuser, this.usermodel});
 
   @override
   State<CompleteProfile> createState() => _CompleteProfileState();
@@ -26,6 +30,21 @@ class _CompleteProfileState extends State<CompleteProfile> {
         imageFile = File(pickedImage.path);
       });
     }
+  }
+
+  void checkValue() {
+    String fullname = textEditingController.text.trim();
+    if (fullname == "" || imageFile == null) {
+      print("Please fill data");
+    } else {
+      uploadData();
+    }
+  }
+
+  void uploadData() async {
+    
+
+
   }
 
   void showPhotoOption() {
@@ -80,10 +99,12 @@ class _CompleteProfileState extends State<CompleteProfile> {
               child: CircleAvatar(
                 backgroundImage: FileImage(imageFile ?? File("path")),
                 radius: 60,
-                child: Icon(
-                  Icons.person,
-                  size: 60,
-                ),
+                child: (imageFile == null)
+                    ? const Icon(
+                        Icons.person,
+                        size: 60,
+                      )
+                    : null,
               ),
             ),
             const Padding(
