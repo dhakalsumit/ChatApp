@@ -21,7 +21,7 @@ class _LogInState extends State<LogIn> {
     _emailController = TextEditingController();
     _passwordController = TextEditingController();
 
-    // TODO: implement initState
+    
     super.initState();
   }
 
@@ -29,7 +29,7 @@ class _LogInState extends State<LogIn> {
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
-    // TODO: implement dispose
+    
     super.dispose();
   }
 
@@ -138,7 +138,7 @@ class _LogInState extends State<LogIn> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) =>
-                                        const RegisterPage()));
+                                         RegisterPage( )));
                           }),
                   ],
                 ),

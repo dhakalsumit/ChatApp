@@ -3,15 +3,16 @@ import 'dart:io';
 import 'package:chatapp/services/usermodel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 class CompleteProfile extends StatefulWidget {
-  final User? firebaseuser;
-  final Usermodel? usermodel;
-  const CompleteProfile({super.key, this.firebaseuser, this.usermodel});
+  final User firebaseuser;
+  final Usermodel userModel;
+  const CompleteProfile({super.key, required this.firebaseuser, required this.userModel});
 
   @override
   State<CompleteProfile> createState() => _CompleteProfileState();
@@ -42,9 +43,23 @@ class _CompleteProfileState extends State<CompleteProfile> {
   }
 
   void uploadData() async {
-    
+    UploadTask uploadTask = FirebaseStorage.instance
+        .ref('uploadPofile')
+        .child(widget.userModel.uid.toString())
+        .putFile(imageFile!);
 
+    TaskSnapshot snapshot = await uploadTask;
 
+    String imageUrl = await snapshot.ref.getDownloadURL();
+    String fullname = textEditingController.text.trim();
+
+    widget.userModel.fullname = fullname;
+    widget.userModel.profilepic = imageUrl;
+
+    await FirebaseFirestore.instance
+        .collection("users")
+        .doc(widget.userModel.uid)
+        .set(widget.userModel.toMap());
   }
 
   void showPhotoOption() {

@@ -1,10 +1,21 @@
-import 'package:chatapp/Pages/log_in.dart';
-import 'package:chatapp/services/auth_service.dart';
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
+import 'package:chatapp/Pages/complete_profile.dart';
+import 'package:chatapp/Pages/log_in.dart';
+import 'package:chatapp/services/auth_service.dart';
+import 'package:chatapp/services/usermodel.dart';
+
 class RegisterPage extends StatefulWidget {
-  const RegisterPage({super.key});
+  final Usermodel;
+
+  const RegisterPage({
+    Key? key,
+    this.Usermodel,
+  }) : super(key: key);
 
   @override
   State<RegisterPage> createState() => _RegisterPageState();
@@ -13,6 +24,9 @@ class RegisterPage extends StatefulWidget {
 class _RegisterPageState extends State<RegisterPage> {
   late final TextEditingController _emailController;
   late final TextEditingController _passwordController;
+
+  // var newuser;
+  // var credential;
 
   @override
   void initState() {
@@ -28,8 +42,35 @@ class _RegisterPageState extends State<RegisterPage> {
     _passwordController.dispose();
   }
 
-  register() {
-    Authenticator().signup(_emailController.text, _passwordController.text);
+  signup(String email, String password) async {
+    UserCredential? credential;
+    try {
+      credential = await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(email: email, password: password);
+    } catch (error) {
+      print("error is $error");
+    }
+
+    if (credential != null) {
+      String uid = credential.user!.uid;
+      Usermodel newuser = Usermodel(
+        uid: uid,
+        email: email,
+        fullname: "",
+        profilepic: "",
+      );
+      await FirebaseFirestore.instance
+          .collection("users")
+          .doc(uid)
+          .set(newuser.toMap())
+          .then((value) => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => CompleteProfile(
+                        userModel: newuser,
+                        firebaseuser: credential!.user!,
+                      ))));
+    }
   }
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -67,19 +108,6 @@ class _RegisterPageState extends State<RegisterPage> {
                   key: _formKey,
                   child: Column(
                     children: [
-                      TextFormField(
-                        decoration: const InputDecoration(
-                            contentPadding: EdgeInsets.only(top: 30),
-                            border: OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10)),
-                            ),
-                            hintText: "Full Name",
-                            prefixIcon: Icon(
-                              Icons.person,
-                              color: Colors.blue,
-                            )),
-                      ),
                       const SizedBox(
                         height: 20,
                       ),
@@ -129,26 +157,22 @@ class _RegisterPageState extends State<RegisterPage> {
                         height: 20,
                       ),
                       ElevatedButton(
+                        style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.resolveWith((states) {
+                            // If the button is pressed, return green, otherwise blue
+                            if (states.contains(MaterialState.pressed)) {
+                              return Colors.blueGrey;
+                            }
+                            return Colors.blue;
+                          }),
+                        ),
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
-                            // If the form is valid, display a snackbar. In the real world,
-                            // you'd often call a server or save the information in a database.
-                            // ScaffoldMessenger.of(context).showSnackBar(
-                            //   const SnackBar(
-                            //       content: Text(
-                            //         'Registering....',
-                            //       ),
-                            //       backgroundColor: Colors.blue),
-                            // );
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => LogIn()));
+                            signup(_emailController.text,
+                                _passwordController.text);
                           }
                         },
-                        style: const ButtonStyle(
-                            backgroundColor:
-                                MaterialStatePropertyAll(Colors.blue)),
                         child: const Center(
                           child: Text(
                             "Register",
