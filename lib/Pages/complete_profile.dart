@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:chatapp/Pages/home_page.dart';
 import 'package:chatapp/services/usermodel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -7,12 +8,14 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:image_picker/image_picker.dart';
 
 class CompleteProfile extends StatefulWidget {
   final User firebaseuser;
   final Usermodel userModel;
-  const CompleteProfile({super.key, required this.firebaseuser, required this.userModel});
+  const CompleteProfile(
+      {super.key, required this.firebaseuser, required this.userModel});
 
   @override
   State<CompleteProfile> createState() => _CompleteProfileState();
@@ -38,6 +41,7 @@ class _CompleteProfileState extends State<CompleteProfile> {
     if (fullname == "" || imageFile == null) {
       print("Please fill data");
     } else {
+      print("Uploading");
       uploadData();
     }
   }
@@ -59,8 +63,21 @@ class _CompleteProfileState extends State<CompleteProfile> {
     await FirebaseFirestore.instance
         .collection("users")
         .doc(widget.userModel.uid)
-        .set(widget.userModel.toMap());
+        .set(widget.userModel.toMap())
+        .then((value) => Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => HomeScreen(
+                      userModel: widget.userModel,
+                      firebaseuser: widget.firebaseuser,
+                    ))));
   }
+
+  // @override
+  // Widget build(BuildContext context) {
+  //   // TODO: implement build
+  //   throw UnimplementedError();
+  // }
 
   void showPhotoOption() {
     showDialog(
@@ -122,10 +139,11 @@ class _CompleteProfileState extends State<CompleteProfile> {
                     : null,
               ),
             ),
-            const Padding(
-              padding: EdgeInsets.only(left: 30, right: 30, top: 20),
+            Padding(
+              padding: const EdgeInsets.only(left: 30, right: 30, top: 20),
               child: TextField(
-                decoration: InputDecoration(
+                controller: textEditingController,
+                decoration: const InputDecoration(
                   hintText: 'Full Name',
                   contentPadding: EdgeInsets.only(left: 30),
                 ),
@@ -134,7 +152,11 @@ class _CompleteProfileState extends State<CompleteProfile> {
             const SizedBox(
               height: 40,
             ),
-            ElevatedButton(onPressed: () {}, child: const Text("Submit"))
+            ElevatedButton(
+                onPressed: () {
+                  checkValue();
+                },
+                child: const Text("Submit"))
           ],
         ));
   }

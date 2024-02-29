@@ -1,7 +1,12 @@
+import 'package:chatapp/services/usermodel.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  final User? firebaseuser;
+  final Usermodel? userModel;
+
+  const HomeScreen({super.key, this.firebaseuser, required this.userModel});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -39,7 +44,7 @@ class _HomeScreenState extends State<HomeScreen> {
           padding: const EdgeInsets.only(bottom: 30, top: 520, left: 280),
           child: FloatingActionButton(
             onPressed: () {},
-            child:const Icon(Icons.add),
+            child: const Icon(Icons.add),
           ),
         ),
       ),
