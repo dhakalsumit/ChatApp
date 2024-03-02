@@ -37,7 +37,7 @@ class _HomeScreenState extends State<HomeScreen> {
           title: const Text(
             "Connect Us",
             style: TextStyle(
-                fontSize: 21, color: Colors.white, fontWeight: FontWeight.bold),
+                fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold),
           ),
         ),
         body: Padding(
